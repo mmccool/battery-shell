@@ -1,2 +1,2 @@
-# battery-shell
-printable shell for Li-Ion battery pack
+# Battery Shell
+Printable shell for Li-ion battery pack.
