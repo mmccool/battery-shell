@@ -12,6 +12,8 @@ standoff_h = 44.5;
 standoff_r = 6/2;
 feet_h = 15;
 
+max_h = 70;
+
 pcb_h = 1.55;
 pcb_x = 64;
 pcb_bx = 55;
@@ -34,7 +36,7 @@ bot_h = bot_s + form_t;
 
 form_bt = 0.5;
 form_bolt_r = 3.5/2;
-form_bolt_R = 6.2/2;
+form_bolt_R = 6.3/2;
 form_bolt_dr = form_bolt_R - form_bolt_r;
 form_R = 10/2;
 form_sx = 5;
@@ -225,14 +227,22 @@ module form(h,c,bottom=false,lip=0) {
     }
   }
 }
+ 
+// tool to check height clearances
+module max_level() {
+  translate([-2*form_x/3,-4*form_y/3,max_h]) cube([4*form_x/3,4*form_y/3,1]);
+  cylinder(r=5,h=max_h,$fn=6);
+  translate([-2*form_x/3,-4*form_y/3,-1]) cube([4*form_x/3,4*form_y/3,1]);
+}
 
 module assembly() {
-  color([1,0,0,1]) translate([0,0,standoff_h/2]) pcb();
+  color([0,1,0,1]) translate([0,0,standoff_h/2]) pcb();
   translate([0,0,form_c/2]) form(top_form_h,top_h,lip=lip_h);
-  color([1,0,0,1]) translate([0,0,-standoff_h/2-pcb_h]) pcb();
+  color([0,1,0,1]) translate([0,0,-standoff_h/2-pcb_h]) pcb();
   translate([0,0,-form_c/2]) rotate([0,180,0]) form(bot_form_h,bot_h,bottom=true);
   color([0.7,0.7,0.7,1]) translate([0,0,-standoff_h/2]) standoffs();
   color([0.7,0.7,0.7,1]) translate([0,0,-feet_h-standoff_h/2-pcb_h]) standoffs(feet_h);
+  // color([1,0,0,1]) translate([0,2*form_y/3,-feet_h-standoff_h/2-pcb_h]) max_level();
 }
 
 module cutaway() {
